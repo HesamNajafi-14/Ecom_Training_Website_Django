@@ -31,7 +31,7 @@
                             <input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
                         </div>
                         <div class="form-field">
-                            <input class="form-control" type="text" name="country" placeholder="Zip code..">
+                            <input class="form-control" type="text" name="country" placeholder="country..">
                         </div>
                     </div>
 
@@ -66,4 +66,10 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        var shipping = '{{order.shipping}}'
+        if(shipping == 'False'){
+            document.getElementById('shipping-info').innerHTML = ''
+        }
+    </script>
 {% endblock content %}
