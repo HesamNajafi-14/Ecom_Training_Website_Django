@@ -62,7 +62,7 @@ function updateUserOrder(productId, action) {
         return response.json();
     })
     .then((data) => {
-        console.log('Data', data);
+        console.log('data:', data);
         location.reload();
     });
 }
