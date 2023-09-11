@@ -12,25 +12,31 @@ def cookieCart(request):
     cartItems = order['get_cart_items']
 
     for i in cart:
-        cartItems += cart[i]["quantity"]
+        try:
+            cartItems += cart[i]["quantity"]
 
-        product = Product.objects.get(id=i)
-        total = (product.price * cart[i]["quantity"])
+            product = Product.objects.get(id=i)
+            total = (product.price * cart[i]["quantity"])
 
-        order['get_cart_total'] += total
-        order['get_cart_items'] += cart[i]["quantity"]
+            order['get_cart_total'] += total
+            order['get_cart_items'] += cart[i]["quantity"]
 
-        item = {
-            'product': {
-                'id': product.id,
-                'name': product.name,
-                'price': product.price,
-                'imageURL': product.imageURL,
-                },
-            'quantity': cart[i]["quantity"],
-            'get_total': total
-            }
-        items.append(item)
+            item = {
+                'product': {
+                    'id': product.id,
+                    'name': product.name,
+                    'price': product.price,
+                    'imageURL': product.imageURL,
+                    },
+                'quantity': cart[i]["quantity"],
+                'get_total': total
+                }
+            items.append(item)
+
+            if product.digital == False:
+                order['shipping'] = True
+        except:
+            pass
     return {'cartItems': cartItems, 'order': order, 'items': items}
 
 def cartData(request):
@@ -56,17 +62,19 @@ def guestOrder(request, data):
     cookieData = cookieCart(request)
     items = cookieData['items']
 
-    customer, created = Customer.objects.get_or_create(email=email,)
+    customer, created = Customer.objects.get_or_create(
+        email=email,
+        )
     customer.name = name
     customer.save()
 
     order = Order.objects.create(
         customer=customer,
         complete=False,
-    )
+        )
 
     for item in items:
-        product = Product.objects.get(pk=item["product"]['id'])
+        product = Product.objects.get(pk=item['product']['id'])
 
         orderItem = OrderItem.objects.create(
             product=product,

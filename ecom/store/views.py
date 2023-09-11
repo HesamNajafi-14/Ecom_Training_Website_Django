@@ -34,6 +34,8 @@ def checkout(request):
     order = data['order']
     items = data['items']
 
+    shipping_required = True
+
     context = {'items':items, 'order':order, 'cartItems':cartItems}
     return render(request, 'store/checkout.html', context)
 

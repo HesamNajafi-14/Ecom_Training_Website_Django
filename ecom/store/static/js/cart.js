@@ -7,10 +7,10 @@ for (var i = 0; i < updateBtns.length; i++) {
         console.log('productId:', productId, 'action:', action);
 
         // Replace 'AnonymousUser' with the actual logic or value for user authentication
-        var user = 'AnonymousUser';
+        
 
         console.log('USER:', user);
-        if (user === 'AnonymousUser') {
+        if (user == 'AnonymousUser') {
             addCookieItem(productId, action);
         } else {
             updateUserOrder(productId, action);
