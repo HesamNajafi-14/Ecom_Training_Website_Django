@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 import json
 import datetime
@@ -100,3 +100,16 @@ def processOrder(request):
 
 
     return JsonResponse('Payment complete!', safe=False)
+
+
+def registerPage(request):
+    context = {}
+    return render(request, 'store/register_page.html', context)
+
+
+def loginPage(request):
+    context = {}
+    return render(request, 'store/login_page.html', context) 
+
+def signoutPage(request):
+    pass

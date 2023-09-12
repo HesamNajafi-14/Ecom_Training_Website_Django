@@ -1,0 +1,136 @@
+{% extends 'store/main.html' %}
+{% load static %}
+{% block content %}
+    <style>
+                /* Reset some default styles */
+        * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        }
+
+        /* Style the form wrapper */
+        .form_wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        }
+
+        /* Style the form container */
+        .form_container {
+        background-color: #ccc; /* Add a semicolon here */
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        }
+
+        /* Style the title */
+        .title_container {
+        text-align: center;
+        margin-bottom: 20px;
+        }
+
+        .title_container h2 {
+        font-size: 24px;
+        }
+
+        /* Style the form elements */
+        .input_field {
+        margin-bottom: 20px;
+        }
+
+        .input_field span {
+        display: block;
+        font-size: 18px;
+        color: #8ebecac5;
+        }
+
+        .input_field input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        }
+
+        /* Style the row */
+        .row {
+        display: flex;
+        justify-content: space-between;
+        }
+
+        /* Style the half columns */
+        .col_half {
+        width: 48%;
+        }
+
+        /* Style the submit button */
+        .button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        }
+
+        /* Style the submit button on hover */
+        .button:hover {
+        background-color: #0056b3;
+        }
+
+
+    </style>
+    <div class="form_wrapper">
+        <div class="form_container">
+            <div class="title_container">
+                <h2>Welcome To UniKers</h2>
+            </div>
+            <div class="row clearfix">
+                <div class="">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <div class="input_field">
+                            <label for="username"><span><i aria-hidden="true" class="fa fa-user"></i></span>Enter Your Username</label>
+                            <input type="text" id="username" name="username" placeholder="Username" required />
+                        </div>                        
+                        <div class="input_field">
+                            <label for="email"><span><i aria-hidden="true" class="fa fa-envelope"></i></span>Enter Your Email</label>
+                            <input type="email" id="email" name="email" placeholder="Email" required />
+                        </div>
+                        <div class="input_field">
+                            <label for="password"><span><i aria-hidden="true" class="fa fa-lock"></i></span>Enter Your Password</label>
+                            <input type="password" id="password" name="password" placeholder="Password" required />
+                        </div>
+                        <div class="input_field">
+                            <label for="retype_password"><span><i aria-hidden="true" class="fa fa-lock"></i></span>Retype Password</label>
+                            <input type="password" id="retype_password" name="password" placeholder="Re-type Password" required />
+                        </div>
+                        <div class="row clearfix">
+                            <div class="col_half">
+                                <div class="input_field">
+                                    <label for="first_name"><span><i aria-hidden="true" class="fa fa-user"></i></span>Enter Your First Name</label>
+                                    <input type="text" id="first_name" name="name" placeholder="First Name" />
+                                </div>
+                            </div>
+                            <div class="col_half">
+                                <div class="input_field">
+                                    <label for="last_name"><span><i aria-hidden="true" class="fa fa-user"></i></span>Enter Your Last Name</label>
+                                    <input type="text" id="last_name" name="name" placeholder="Last Name" required />
+                                </div>
+                            </div>
+                        </div>
+                        <input class="button" type="submit" value="Register" />
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+  
+    
+{% endblock content %}
