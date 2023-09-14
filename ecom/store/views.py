@@ -4,6 +4,10 @@ import json
 import datetime
 from . models import *
 from . utils import cookieCart, cartData, guestOrder
+from django.contrib.auth.models import User
+from django.contrib import messages, auth
+from django.contrib.auth import login, authenticate, logout
+from .forms import CustomRegistrationForm
 
 # Create your views here.
 
@@ -34,7 +38,7 @@ def checkout(request):
     order = data['order']
     items = data['items']
 
-    shipping_required = True
+    
 
     context = {'items':items, 'order':order, 'cartItems':cartItems}
     return render(request, 'store/checkout.html', context)
@@ -103,13 +107,39 @@ def processOrder(request):
 
 
 def registerPage(request):
-    context = {}
+    page = 'register'
+    form = CustomRegistrationForm()
+
+    if request.method == 'POST':
+        form = CustomRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
+
+            user = authenticate(
+                request, username=user.username, password=request.POST['password1'])
+            
+            if user is not None:
+                login(request, user)
+                return redirect('store')
+
+    context = {'form': form, 'page': page}
     return render(request, 'store/register_page.html', context)
 
 
 def loginPage(request):
-    context = {}
-    return render(request, 'store/login_page.html', context) 
+    page = 'login'
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
 
-def signoutPage(request):
-    pass
+        user = authenticate(request, username=username, password=password)
+        print('USER:', user)
+        if user is not None:
+            login(request, user)
+            return redirect('store')
+    return render(request, 'store/login_page.html', {'page':page})
+
+def logoutPage(request):
+    logout(request)
+    return redirect('store')

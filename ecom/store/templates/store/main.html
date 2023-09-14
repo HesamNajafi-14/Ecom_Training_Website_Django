@@ -74,16 +74,23 @@
                     <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
                 </ul>
                 <form class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login_page'%}">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <span class="nav-link">/</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register_page' %}">Register</a>
-                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login_page'%}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <span class="nav-link">/</span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'register_page' %}">Register</a>
+                        </li>
+                    {% endif %}
                 </form>
+                
                 
                 <form class="d-flex" action="{% url 'cart' %}">
                     <button class="btn btn-outline-dark" type="submit">
