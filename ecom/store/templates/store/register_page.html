@@ -108,6 +108,9 @@
                             <label for="retype_password"><span><i aria-hidden="true" class="fa fa-lock"></i></span>Confirm Password</label>
                             {{form.password2}}
                         </div>
+
+                        {{form.errors}}
+
                         <input class="button" type="submit" value="Register" />
                         <p>Already have an account? <a href="{% url 'login' %}">Login</a>.</p>
                     </form>

@@ -10,9 +10,53 @@ from django.contrib.auth import login, authenticate, logout
 from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm
 from .forms import CreateUserForm
+from django.contrib import messages
 
 
 # Create your views here.
+
+def registerPage(request):
+    form = CreateUserForm()
+
+    if request.method == 'POST':
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()  # Save the user object
+
+            # Create a Customer linked to the user
+            customer, created = Customer.objects.get_or_create(user=user)
+
+            # If the customer was just created, you can set additional fields here
+            if created:
+                customer.name = 'Default Name'  # Set a default name
+                customer.email = user.email  # Set the email from the user
+                customer.save()
+
+            messages.success(request, 'Account was created for ' + user.username)
+              # Log in the user after registration
+            return redirect('login')  # Redirect to the desired page after registration
+
+    context = {'form': form}
+    return render(request, 'store/register_page.html', context)
+
+def loginPage(request):
+
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return redirect('store')
+
+    context = {}
+    return render(request, 'store/login_page.html', context)
+
+def logoutPage(request):
+    logout(request)
+    return redirect('store')
 
 def store(request):
     
@@ -54,7 +98,12 @@ def updateItem(request):
     print('Action:', action)
     print('ProductId:', productId)
 
-    customer = request.user.customer
+    if request.user.is_authenticated:
+        customer = request.user.customer
+    else:
+        # Handle the guest user case here, if needed
+        customer, order = guestOrder(request, data)
+
     product = Product.objects.get(id=productId)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)
 
@@ -109,21 +158,4 @@ def processOrder(request):
     return JsonResponse('Payment complete!', safe=False)
 
 
-def registerPage(request):
-    form = CreateUserForm()
 
-    if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            form.save()
-
-    context = {'form':form}
-    return render(request, 'store/register_page.html', context)
-
-def loginPage(request):
-    context = {}
-    return render(request, 'store/login_page.html', context)
-
-def logoutPage(request):
-    logout(request)
-    return redirect('store')

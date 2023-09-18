@@ -104,6 +104,11 @@
                         </div>
                         
                         <input class="button" type="submit" value="Login" name="login_button" />
+
+                        {% for message in messages %}
+                            <p id="messages">{{message}}</p>
+                        {% endfor %}
+
                         <p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p>
 
                     </form>

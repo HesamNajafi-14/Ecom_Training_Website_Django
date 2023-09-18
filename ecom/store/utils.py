@@ -41,18 +41,20 @@ def cookieCart(request):
 
 def cartData(request):
     if request.user.is_authenticated:
-        customer = request.user.customer  # Attempt to get the customer associated with the user
+        customer = request.user.customer
+        print('Authenticated user:', customer)  # Debug statement
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         items = order.orderitem_set.all()
         cartItems = order.get_cart_items
     else:
-        # If the user is not authenticated, create empty data
         customer = None
+        print('Guest user:', customer)  # Debug statement
         order = {'get_cart_total': 0, 'get_cart_items': 0}
         items = []
         cartItems = order['get_cart_items']
 
     return {'cartItems': cartItems, 'order': order, 'items': items, 'customer': customer}
+
 
 def guestOrder(request, data):
     print('User is not logged in')
