@@ -82,8 +82,6 @@
         .button:hover {
         background-color: #0056b3;
         }
-
-
     </style>
     <div class="form_wrapper">
         <div class="form_container">
@@ -92,46 +90,35 @@
             </div>
             <div class="row clearfix">
                 <div class="">
-                    <form method="post">
+                    <form method="post" action="/register/">
                         {% csrf_token %}
                         <div class="input_field">
                             <label for="username"><span><i aria-hidden="true" class="fa fa-user"></i></span>Username</label>
-                            <input type="text" id="username" name="username" placeholder="Enter Your Username" required />
+                            {{form.username}}
                         </div>                        
                         <div class="input_field">
                             <label for="email"><span><i aria-hidden="true" class="fa fa-envelope"></i></span>Email</label>
-                            <input type="email" id="email" name="email" placeholder="Enter Your Email" required />
+                            {{form.email}}
                         </div>
                         <div class="input_field">
                             <label for="password"><span><i aria-hidden="true" class="fa fa-lock"></i></span>Password</label>
-                            <input type="password" id="password" name="password" placeholder="Enter Your Password" required />
+                            {{form.password1}}
                         </div>
                         <div class="input_field">
                             <label for="retype_password"><span><i aria-hidden="true" class="fa fa-lock"></i></span>Confirm Password</label>
-                            <input type="password" id="retype_password" name="password" placeholder="Confirm Password" required />
-                        </div>
-                        <div class="row clearfix">
-                            <div class="col_half">
-                                <div class="input_field">
-                                    <label for="first_name"><span><i aria-hidden="true" class="fa fa-user"></i></span>First Name</label>
-                                    <input type="text" id="first_name" name="firstname" placeholder="Enter Your First Name" />
-                                </div>
-                            </div>
-                            <div class="col_half">
-                                <div class="input_field">
-                                    <label for="last_name"><span><i aria-hidden="true" class="fa fa-user"></i></span>Last Name</label>
-                                    <input type="text" id="last_name" name="lastname" placeholder="Enter Your Last Name" required />
-                                </div>
-                            </div>
+                            {{form.password2}}
                         </div>
                         <input class="button" type="submit" value="Register" />
-                        <p>Already have an account? <a href="{% url 'login_page' %}">Login</a>.</p>
+                        <p>Already have an account? <a href="{% url 'login' %}">Login</a>.</p>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+   
     
+                    
+  
   
     
 {% endblock content %}

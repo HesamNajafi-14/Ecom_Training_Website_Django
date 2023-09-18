@@ -92,7 +92,7 @@
             </div>
             <div class="row clearfix">
                 <div class="">
-                    <form method="post" class="form">
+                    <form method="post" action="/login/">
                         {% csrf_token %}
                         <div class="input_field">
                             <label for="username"><span><i aria-hidden="true" class="fa fa-user"></i></span>Username</label>
@@ -104,7 +104,7 @@
                         </div>
                         
                         <input class="button" type="submit" value="Login" name="login_button" />
-                        <p>Don't have an account? <a href="{% url 'register_page' %}">Register here</a>.</p>
+                        <p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p>
 
                     </form>
                 </div>

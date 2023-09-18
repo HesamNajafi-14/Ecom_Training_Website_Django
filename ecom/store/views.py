@@ -7,7 +7,10 @@ from . utils import cookieCart, cartData, guestOrder
 from django.contrib.auth.models import User
 from django.contrib import messages, auth
 from django.contrib.auth import login, authenticate, logout
-from .forms import CustomRegistrationForm
+from django.urls import reverse
+from django.contrib.auth.forms import UserCreationForm
+from .forms import CreateUserForm
+
 
 # Create your views here.
 
@@ -107,38 +110,19 @@ def processOrder(request):
 
 
 def registerPage(request):
-    page = 'register'
-    form = CustomRegistrationForm()
+    form = CreateUserForm()
 
     if request.method == 'POST':
-        form = CustomRegistrationForm(request.POST)
+        form = CreateUserForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.save()
+            form.save()
 
-            user = authenticate(
-                request, username=user.username, password=request.POST['password1'])
-            
-            if user is not None:
-                login(request, user)
-                return redirect('store')
-
-    context = {'form': form, 'page': page}
+    context = {'form':form}
     return render(request, 'store/register_page.html', context)
 
-
 def loginPage(request):
-    page = 'login'
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-
-        user = authenticate(request, username=username, password=password)
-        print('USER:', user)
-        if user is not None:
-            login(request, user)
-            return redirect('store')
-    return render(request, 'store/login_page.html', {'page':page})
+    context = {}
+    return render(request, 'store/login_page.html', context)
 
 def logoutPage(request):
     logout(request)
