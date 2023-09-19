@@ -16,43 +16,51 @@ from django.contrib import messages
 # Create your views here.
 
 def registerPage(request):
-    form = CreateUserForm()
+    if request.user.is_authenticated:
+        return redirect('store')
+    else:
+        form = CreateUserForm()
 
-    if request.method == 'POST':
-        form = CreateUserForm(request.POST)
-        if form.is_valid():
-            user = form.save()  # Save the user object
+        if request.method == 'POST':
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                user = form.save()  # Save the user object
 
-            # Create a Customer linked to the user
-            customer, created = Customer.objects.get_or_create(user=user)
+                # Create a Customer linked to the user
+                customer, created = Customer.objects.get_or_create(user=user)
 
-            # If the customer was just created, you can set additional fields here
-            if created:
-                customer.name = 'Default Name'  # Set a default name
-                customer.email = user.email  # Set the email from the user
-                customer.save()
+                # If the customer was just created, you can set additional fields here
+                if created:
+                    customer.name = user.username  # Set a default name
+                    customer.email = user.email  # Set the email from the user
+                    customer.save()
 
-            messages.success(request, 'Account was created for ' + user.username)
-              # Log in the user after registration
-            return redirect('login')  # Redirect to the desired page after registration
+                messages.success(request, 'Account was created for ' + user.username)
+                # Log in the user after registration
+                return redirect('login')  # Redirect to the desired page after registration
 
-    context = {'form': form}
-    return render(request, 'store/register_page.html', context)
+        context = {'form': form}
+        return render(request, 'store/register_page.html', context)
 
 def loginPage(request):
+    if request.user.is_authenticated:
+        return redirect('store') 
+    else:
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
 
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+            user = authenticate(request, username=username, password=password)
 
-        user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('store')
+            else:
+                messages.info(request,'Username or Password incorrect!')
+                
 
-        if user is not None:
-            login(request, user)
-            return redirect('store')
-
-    context = {}
-    return render(request, 'store/login_page.html', context)
+        context = {}
+        return render(request, 'store/login_page.html', context)
 
 def logoutPage(request):
     logout(request)

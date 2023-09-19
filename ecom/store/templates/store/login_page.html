@@ -82,6 +82,12 @@
         .button:hover {
         background-color: #0056b3;
         }
+        #messages {
+            background-color: #f2f2f2;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+        }
 
 
     </style>
@@ -105,9 +111,13 @@
                         
                         <input class="button" type="submit" value="Login" name="login_button" />
 
-                        {% for message in messages %}
-                            <p id="messages">{{message}}</p>
-                        {% endfor %}
+
+                        <div id="message-container">
+                            {% for message in messages %}
+                                <p class="message" style="color: red;">{{ message }}</p>
+                            {% endfor %}
+                        </div>
+
 
                         <p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p>
 
